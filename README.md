@@ -1,5 +1,7 @@
 # crea_mail
 
+You need a rotating proxy on your pc (proxifier can help) or a 4g phone with USB tethering and turn on/off airplane mode when "ROTATE" appear on the console
+
 How to use it:\
   -npm install\
   -node creator.js [number of accounts] ([option])
