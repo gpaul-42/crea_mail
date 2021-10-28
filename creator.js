@@ -3,7 +3,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 const fs = require('fs')
 var passwordValidator = require('password-validator');
 const randomstring = require("randomstring");
-var randomWords = require('random-words');
+const randomWordFR = require('random-word-fr');
 const accent = require('remove-accents')
 const rn = require('random-number');
 const publicIp = require('public-ip');
@@ -27,19 +27,19 @@ async function gene(nbr, option) {
 		while (schema.validate(password) == false) {
 			password = randomstring.generate({ length: 10 });
 		}
-		var mail = accent(randomWords()) + randomstring.generate({ length: 5, charset: 'numeric' }) + "@hotmail.com"
+		var mail = accent(randomWordFR()) + randomstring.generate({ length: 5, charset: 'numeric' }) + "@hotmail.com"
 		console.log(mail, password)
 		if (i % 3 == 0 && i > 0) {
 			while (my_ip == await publicIp.v4()) {
 				console.log("ROTATE")
-				await sleep(1000)
+				await sleep(5000)
 			}
 			my_ip = await publicIp.v4()
 		}
 		await create_outlook(mail, password, IMAP)
-		obj = JSON.parse(fs.readFileSync('mail.json'))
+		obj = JSON.parse(fs.readFileSync('../mail.json'))
 		obj.push(mail + ":" + password)
-		fs.writeFileSync('mail.json', JSON.stringify(obj, null, '\t'))
+		fs.writeFileSync('../mail.json', JSON.stringify(obj, null, '\t'))
 		i++;
 	}
 	return
@@ -54,9 +54,10 @@ async function create_outlook(mail, password, IMAP) {
 	const page = await browser.newPage();
 	await page.setViewport({ width: 800, height: 600 })
 	await page.goto('https://signup.live.com/signup');
+	await page.waitForSelector("#MemberName")
 	await page.type('#MemberName', mail)
 	await page.tap('#iSignupAction')
-	await page.waitForTimeout(1500)
+	await page.waitForTimeout(500)
 	await page.type('#PasswordInput', password)
 	await page.tap('#iSignupAction')
 	await page.waitForTimeout(500)
