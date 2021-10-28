@@ -37,9 +37,9 @@ async function gene(nbr, option) {
 			my_ip = await publicIp.v4()
 		}
 		await create_outlook(mail, password, IMAP)
-		obj = JSON.parse(fs.readFileSync('../mail.json'))
+		obj = JSON.parse(fs.readFileSync('mail.json'))
 		obj.push(mail + ":" + password)
-		fs.writeFileSync('../mail.json', JSON.stringify(obj, null, '\t'))
+		fs.writeFileSync('mail.json', JSON.stringify(obj, null, '\t'))
 		i++;
 	}
 	return

@@ -13,6 +13,7 @@
     "public-ip": "^4.0.4",
     "puppeteer-extra": "^3.2.3",
     "puppeteer-extra-plugin-stealth": "^2.9.0",
+    "random-number": "^0.0.9",
     "random-words": "^1.1.1",
     "randomstring": "^1.2.1",
     "remove-accents": "^0.4.2"
