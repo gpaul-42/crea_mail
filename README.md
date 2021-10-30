@@ -9,6 +9,6 @@ How to use it:\
   -node creator.js [number of accounts] ([option])
 
 OPTION:\
-      -no (deactivate the initiation of the outlook email, if you plan to connect to the mail using IMAP don't use it)
+      -no (deactivate the initiation of the outlook mailbox, to initiate the mailbox you will need to log into it manually)
 
 Credits : Faldin#8570
