@@ -1,6 +1,8 @@
 # crea_mail
 
-You need a rotating proxy on your pc (proxifier can help) or a 4g phone with USB tethering and turn on/off airplane mode when "ROTATE" appear on the console
+You need a rotating proxy on your pc (proxifier can help) or a 4g phone with USB tethering and turn on/off airplane mode when "ROTATE" appear on the console.
+
+You also need to do the captcha manualy.
 
 How to use it:\
   -npm install\
