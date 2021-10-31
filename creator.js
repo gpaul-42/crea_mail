@@ -3,7 +3,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 const fs = require('fs')
 var passwordValidator = require('password-validator');
 const randomstring = require("randomstring");
-const randomWordFR = require('random-word-fr');
+const randomWord = require('random-words');
 const accent = require('remove-accents')
 const rn = require('random-number');
 const publicIp = require('public-ip');
@@ -27,7 +27,7 @@ async function gene(nbr, option) {
 		while (schema.validate(password) == false) {
 			password = randomstring.generate({ length: 10 });
 		}
-		var mail = accent(randomWordFR()) + randomstring.generate({ length: 5, charset: 'numeric' }) + "@hotmail.com"
+		var mail = accent(randomWord()) + randomstring.generate({ length: 5, charset: 'numeric' }) + "@hotmail.com"
 		console.log(mail, password)
 		if (i % 3 == 0 && i > 0) {
 			while (my_ip == await publicIp.v4()) {
@@ -37,9 +37,9 @@ async function gene(nbr, option) {
 			my_ip = await publicIp.v4()
 		}
 		await create_outlook(mail, password, IMAP)
-		obj = JSON.parse(fs.readFileSync('../mail.json'))
+		obj = JSON.parse(fs.readFileSync('mail.json'))
 		obj.push(mail + ":" + password)
-		fs.writeFileSync('../mail.json', JSON.stringify(obj, null, '\t'))
+		fs.writeFileSync('mail.json', JSON.stringify(obj, null, '\t'))
 		i++;
 	}
 	return
@@ -57,26 +57,29 @@ async function create_outlook(mail, password, IMAP) {
 	await page.waitForSelector("#MemberName")
 	await page.type('#MemberName', mail)
 	await page.tap('#iSignupAction')
-	await page.waitForTimeout(500)
+	await page.waitForTimeout(100)
+	await page.waitForSelector("#PasswordInput")
 	await page.type('#PasswordInput', password)
 	await page.tap('#iSignupAction')
-	await page.waitForTimeout(500)
+	await page.waitForSelector("#FirstName")
 	await page.type('#FirstName', randomstring.generate({ length: 10 }))
 	await page.type('#LastName', randomstring.generate({ length: 10 }))
 	await page.tap('#iSignupAction')
-	await page.waitForTimeout(500)
+	await page.waitForSelector("#BirthDay")
 	await page.select('#Country', "FR");
 	await page.select('#BirthDay', String(gen_day()));
 	await page.select('#BirthMonth', String(gen_month()));
-	await page.waitForTimeout(100)
+	await page.waitForTimeout(500)
 	await page.type('#BirthYear', String(gen_year()));
+	await page.waitForTimeout(50)
 	await page.tap('#iSignupAction')
 	await page.waitForNavigation()
 	if (IMAP == 1) {
 		await page.tap('#idBtn_Back')
 		await page.waitForNavigation()
-		await page.goto('https://outlook.com');
-		await page.waitForNavigation()
+		await page.goto('https://outlook.live.com/mail/0/inbox');
+		while (page.url() != "https://outlook.live.com/mail/0/")
+			await sleep(10)
 	}
 	await browser.close()
 	return 0
