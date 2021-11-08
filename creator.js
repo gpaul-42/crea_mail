@@ -56,20 +56,31 @@ async function create_outlook(mail, password, IMAP) {
 	await page.goto('https://signup.live.com/signup');
 	await page.waitForSelector("#MemberName")
 	await page.type('#MemberName', mail)
+	await page.waitForTimeout(500)
 	await page.tap('#iSignupAction')
-	await page.waitForTimeout(100)
-	await page.waitForSelector("#PasswordInput")
+	try {
+		await page.waitForSelector('#PasswordInput')
+	} catch (error) {
+		await browser.close()
+		return 1
+	}
 	await page.type('#PasswordInput', password)
 	await page.tap('#iSignupAction')
 	await page.waitForSelector("#FirstName")
+	await page.waitForTimeout(10)
 	await page.type('#FirstName', randomstring.generate({ length: 10 }))
+	await page.waitForTimeout(10)
 	await page.type('#LastName', randomstring.generate({ length: 10 }))
+	await page.waitForTimeout(10)
 	await page.tap('#iSignupAction')
 	await page.waitForSelector("#BirthDay")
+	await page.waitForTimeout(10)
 	await page.select('#Country', "FR");
+	await page.waitForTimeout(10)
 	await page.select('#BirthDay', String(gen_day()));
+	await page.waitForTimeout(10)
 	await page.select('#BirthMonth', String(gen_month()));
-	await page.waitForTimeout(500)
+	await page.waitForTimeout(200)
 	await page.type('#BirthYear', String(gen_year()));
 	await page.waitForTimeout(50)
 	await page.tap('#iSignupAction')
@@ -78,8 +89,12 @@ async function create_outlook(mail, password, IMAP) {
 		await page.tap('#idBtn_Back')
 		await page.waitForNavigation()
 		await page.goto('https://outlook.live.com/mail/0/inbox');
-		while (page.url() != "https://outlook.live.com/mail/0/")
-			await sleep(10)
+		await page.waitForNavigation()
+		while (page.url() != "https://outlook.live.com/mail/0/inbox") {
+			await sleep(100)
+			await page.screenshot({ path: 'check.png' });
+		}
+		await page.waitForTimeout(500)
 	}
 	await browser.close()
 	return 0
