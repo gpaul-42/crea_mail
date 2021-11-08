@@ -58,12 +58,7 @@ async function create_outlook(mail, password, IMAP) {
 	await page.type('#MemberName', mail)
 	await page.waitForTimeout(500)
 	await page.tap('#iSignupAction')
-	try {
-		await page.waitForSelector('#PasswordInput')
-	} catch (error) {
-		await browser.close()
-		return 1
-	}
+	await page.waitForSelector('#PasswordInput')
 	await page.type('#PasswordInput', password)
 	await page.tap('#iSignupAction')
 	await page.waitForSelector("#FirstName")
@@ -92,7 +87,6 @@ async function create_outlook(mail, password, IMAP) {
 		await page.waitForNavigation()
 		while (page.url() != "https://outlook.live.com/mail/0/inbox") {
 			await sleep(100)
-			await page.screenshot({ path: 'check.png' });
 		}
 		await page.waitForTimeout(500)
 	}
