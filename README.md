@@ -2,7 +2,7 @@
 
 You need a rotating proxy on your pc (proxifier can help) or a 4g phone with USB tethering and turn on/off airplane mode when "ROTATE" appear on the console.
 
-You also need to do the captcha manualy.
+You also need to do the captcha manualy with this version of the program.
 
 How to use it:\
   -npm install\
